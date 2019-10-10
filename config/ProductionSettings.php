@@ -1,5 +1,7 @@
 <?php
 
+namespace config;
+
 class ProductionSettings {
     public $DB_SERVER;
     public $DB_USERNAME;
