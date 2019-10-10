@@ -15,6 +15,7 @@ class LoginView extends View {
 	private static $messageId = 'LoginView::Message';
 
 	private $message = '';
+	private $username = '';
 
 	
 
@@ -66,7 +67,7 @@ class LoginView extends View {
 					<p id="' . self::$messageId . '">' . $this->message . '</p>
 					
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->username . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -97,6 +98,7 @@ class LoginView extends View {
 
 	public function getUsername() : string
 	{
+		$this->username = $_POST[self::$name];
 		return $_POST[self::$name];
 	}
 
