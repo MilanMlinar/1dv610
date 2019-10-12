@@ -9,7 +9,7 @@ class DBconnection {
 
     public function __construct()
     {
-        $this->settings = new \config\ProductionSettings();
+        $this->settings = new \config\Settings();
     }
 
     public function connect()
