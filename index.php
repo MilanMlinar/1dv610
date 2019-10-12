@@ -14,7 +14,6 @@ require_once('model/Cookie.php');
 require_once('view/LoginView.php');
 require_once('view/DateTimeView.php');
 require_once('view/LayoutView.php');
-require_once('view/TodoView.php');
 require_once('view/RegistrationView.php');
 require_once('view/Messages.php');
 
