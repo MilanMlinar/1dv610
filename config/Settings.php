@@ -2,6 +2,10 @@
 
 namespace config;
 
+/*
+* Localhost settings
+*/
+
 class Settings {
 
         public $DB_SERVER = "localhost";
