@@ -7,6 +7,7 @@ class Database {
 
     public function __construct()
     {
+    
         $this->conn = new \config\DBconnection();
     }
 
