@@ -24,7 +24,7 @@ class RegistrationView extends View {
                     <p id="' . self::$messageId . '">' . $this->message . '</p>
     
                     <label for="' . self::$username . '">Username :</label>
-                    <input type="text" id="' . self::$username . '" name="' . self::$username . '" value="' . $this->name . '"/><br>
+                    <input type="text" id="' . self::$username . '" name="' . self::$username . '" value="' . strip_tags($this->name) . '"/><br>
     
                     <label for="' . self::$password . '">Password :</label>
                     <input type="password" id="' . self::$password . '" name="' . self::$password . '" /><br>

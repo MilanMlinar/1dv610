@@ -8,7 +8,13 @@ class Register {
 
         $string = '';
 
-        if(empty($username)) {
+        if($username != strip_tags($username))
+        {
+            $string = "Username contains invalid characters.";
+            return $string;
+        }
+
+        if(empty($username) || strlen($username) < 3) {
             $string .= "Username has too few characters, at least 3 characters.<br>";
         }
 
