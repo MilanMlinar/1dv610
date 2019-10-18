@@ -16,6 +16,6 @@ class Messages {
     public $youWillBeRemembered = 'Welcome and you will be remembered';
     public $notMatchedPasswords = 'Passwords do not match.';
     public $userAlreadyExists = 'User exists, pick another username.';
-    public $registrationSuccess = 'Registered a new user.';
+    public $registrationSuccess = 'Registered new user.';
     public $corruptCookies = 'Wrong information in cookies';
 }
