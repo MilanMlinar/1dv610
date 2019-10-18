@@ -4,7 +4,6 @@ namespace view;
 
 class DateTimeView {
 
-
 	public function show() {
 
 		$day = date('l');

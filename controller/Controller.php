@@ -75,6 +75,7 @@ class Controller {
         if (!empty($error))
         {
             $this->loginView->setMessage($error);
+            return false;
         }
 
         $userExists = $this->database->userExistsInDatabase($username, $password);
@@ -91,6 +92,7 @@ class Controller {
         }
         else
         {
+            $this->loginView->setMessage($this->messages->wrongAuthorization);
             return false;
         }
     }
