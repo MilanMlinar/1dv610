@@ -111,15 +111,12 @@ class Controller {
         $password = $this->registrationView->getRegPassword();
         $passwordRepeat = $this->registrationView->getRegPasswordRepeat();
         
-        $userAlreadyExists = $this->database->insertUserToDB($username, $password);
-
+        $userAlreadyExists = $this->database->usernameIsTaken($username);
         $errors = $this->register->registrationInputErrors($username, $password, $passwordRepeat);
-
         if ($userAlreadyExists)
         {
             $errors .= $this->messages->userAlreadyExists;
         }
-
         if (!empty($errors))
         {
             $this->registrationView->setMessage($errors);
@@ -131,6 +128,7 @@ class Controller {
         }
         else if (!$userAlreadyExists && empty($errors))
         {
+            $this->database->insertUserToDB($username, $password);
             $this->loginView->setMessage($this->messages->registrationSuccess);
             $_SESSION['SUCCESS'] = true;   
             header("Location: ?");

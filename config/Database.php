@@ -31,6 +31,22 @@ class Database {
         }
     }
 
+    public function usernameIsTaken($username) : bool
+    {
+        $conn = $this->conn->connect();
+        $query = "SELECT username FROM users WHERE username = ?";
+        $stmt = $conn->prepare($query);
+        $stmt->bind_param("s", $username);
+        $stmt->execute();
+        $stmt->bind_result($DBusername);
+        $stmt->fetch();
+        if ($username == $DBusername) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public function insertUserToDB($regUsername, $regPassword) : bool
     {
         $conn = $this->conn->connect();
