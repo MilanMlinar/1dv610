@@ -26,7 +26,7 @@ class Register {
             $string .= "Password has too few characters, at least 6 characters.<br>";
         }
 
-        if(!empty($pwd) && !empty($pwdConfirm) && $pwd != $pwdConfirm)
+        if(!empty($pwd) && $pwd != $pwdConfirm)
         {
             $string .= "Passwords do not match. ";
         }
