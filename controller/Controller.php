@@ -66,35 +66,34 @@ class Controller {
 
     public function login ()
     {
-        try
+        $username = $this->loginView->getUsername();
+        $password = $this->loginView->getPassword();
+        $keepLoggedIn = $this->loginView->getKeepLoggedIn();
+
+        $error = $this->login->errorHandler($username, $password);
+
+        if (!empty($error))
         {
-            $username = $this->loginView->getUsername();
-            $password = $this->loginView->getPassword();
-            $keepLoggedIn = $this->loginView->getKeepLoggedIn();
-
-            $this->login->errorHandler($username, $password);
-
-            $userExists = $this->database->isRegisteredMember($username, $password);
-            
-            if ($userExists)
-            {
-                if ($keepLoggedIn)
-                {
-                    $this->cookie->setCookies($username, $password);
-                }
-                $this->sessionStorage->setSession($username);
-                $this->loginView->setMessage($this->messages->welcome);
-                return true;
-            }
-            else
-            {
-                $this->loginView->setMessage($this->messages->wrongAuthorization);
-                return false;
-            }
+            $this->loginView->setMessage($error);
+            return false;
         }
-        catch (Exception $ex)
+
+        $userExists = $this->database->userExistsInDatabase($username, $password);
+        
+        if ($userExists && empty($error))
         {
-            $this->loginView->setMessage($ex->getMessage());
+            if ($keepLoggedIn)
+            {
+                $this->cookie->setCookies($username, $password);
+            }
+            $this->sessionStorage->setSession($username);
+            $this->loginView->setMessage($this->messages->welcome);
+            return true;
+        }
+        else
+        {
+            $this->loginView->setMessage($this->messages->wrongAuthorization);
+            return false;
         }
     }
 
@@ -112,7 +111,7 @@ class Controller {
         $password = $this->registrationView->getRegPassword();
         $passwordRepeat = $this->registrationView->getRegPasswordRepeat();
         
-        $userAlreadyExists = $this->database->usernameIsTaken($username);
+        $userAlreadyExists = $this->database->insertUserToDB($username, $password);
 
         $errors = $this->register->registrationInputErrors($username, $password, $passwordRepeat);
 
@@ -132,7 +131,6 @@ class Controller {
         }
         else if (!$userAlreadyExists && empty($errors))
         {
-            $this->database->insertUserToDB($username, $password);
             $this->loginView->setMessage($this->messages->registrationSuccess);
             $_SESSION['SUCCESS'] = true;   
             header("Location: ?");

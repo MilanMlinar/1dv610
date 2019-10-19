@@ -5,14 +5,18 @@ namespace model;
 class Login {
 
     public function errorHandler($username, $pwd) {
+        
+        $error = '';
 
         if (empty($username))
         {
-            throw new \Exception('Username is missing');
+            $error = 'Username is missing';
         }
         else if (empty($pwd))
         {
-            throw new \Exception('Password is missing');
+            $error = 'Password is missing';
         }
+
+        return $error;
     }
 }

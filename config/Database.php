@@ -11,7 +11,7 @@ class Database {
         $this->conn = new \config\DBconnection();
     }
 
-    public function isRegisteredMember($username, $password) : bool
+    public function userExistsInDatabase($username, $password) : bool
     {
         $conn = $this->conn->connect();
 
@@ -25,26 +25,6 @@ class Database {
         $stmt->fetch();
 
         if (password_verify($password, $DBPwd) && $username == $DBusername) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public function usernameIsTaken($username) : bool
-    {
-        $conn = $this->conn->connect();
-
-        $query = "SELECT username FROM users WHERE username = ?";
-
-        $stmt = $conn->prepare($query);
-        $stmt->bind_param("s", $username);
-        $stmt->execute();
-
-        $stmt->bind_result($DBusername);
-        $stmt->fetch();
-
-        if ($username == $DBusername) {
             return true;
         } else {
             return false;

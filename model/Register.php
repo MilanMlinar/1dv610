@@ -18,11 +18,15 @@ class Register {
             $string .= "Username has too few characters, at least 3 characters.<br>";
         }
 
-        if(empty($pwd) || strlen($pwd) < 6) {
+        if(empty($pwd)) {
             $string .= "Password has too few characters, at least 6 characters.<br>";
         }
 
-        if($pwd != $pwdConfirm && !empty($pwd))
+        if(!empty($pwd) && strlen($pwd) < 6) {
+            $string .= "Password has too few characters, at least 6 characters.<br>";
+        }
+
+        if(!empty($pwd) && !empty($pwdConfirm) && $pwd != $pwdConfirm)
         {
             $string .= "Passwords do not match. ";
         }
