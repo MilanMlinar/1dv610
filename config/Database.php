@@ -41,7 +41,7 @@ class Database {
         $stmt->bind_result($DBusername);
         $stmt->fetch();
         if ($username == $DBusername) {
-            return true;
+            throw new \UsernameAlreadyTaken();
         } else {
             return false;
         }

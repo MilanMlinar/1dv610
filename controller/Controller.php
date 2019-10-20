@@ -107,31 +107,36 @@ class Controller {
 
     public function register()
     {
-        $username = $this->registrationView->getRegUsername();
-        $password = $this->registrationView->getRegPassword();
-        $passwordRepeat = $this->registrationView->getRegPasswordRepeat();
-        
-        $userAlreadyExists = $this->database->usernameIsTaken($username);
-        $errors = $this->register->registrationInputErrors($username, $password, $passwordRepeat);
-        if ($userAlreadyExists)
+        try
         {
-            $errors .= $this->messages->userAlreadyExists;
+            $username = $this->registrationView->getRegUsername();
+            $password = $this->registrationView->getRegPassword();
+            $passwordRepeat = $this->registrationView->getRegPasswordRepeat();
+            
+            $this->register->registrationInputErrors($username, $password, $passwordRepeat);
+            $userAlreadyExists = $this->database->usernameIsTaken($username);
+            
+            if (!$userAlreadyExists)
+            {
+                $this->database->insertUserToDB($username, $password);
+                $this->loginView->setMessage($this->messages->registrationSuccess);
+                $_SESSION['SUCCESS'] = true;
+                header("Location: ?");
+            }
         }
-        if (!empty($errors))
-        {
-            $this->registrationView->setMessage($errors);
-        }
-        
-        if ($userAlreadyExists && empty($errors))
-        {
+        catch (\TooShortUsernameAndPassword $ex) {
+            $this->registrationView->setMessage($this->messages->tooShortUsernameAndPassword);
+        } catch(\PasswordsDoNotMatch $ex) {
+            $this->registrationView->setMessage($this->messages->notMatchedPasswords);
+        } catch(\TooShortUsername $ex) {
+            $this->registrationView->setMessage($this->messages->tooFewCharsUsername);
+        } catch(\TooShortPassword $ex) {
+            $this->registrationView->setMessage($this->messages->tooFewCharsPassword);
+        } catch (\InvalidChars $ex) {
+            $this->registrationView->setMessage($this->messages->containsInvalidChars);
+        } catch (\UsernameAlreadyTaken $ex) {
             $this->registrationView->setMessage($this->messages->userAlreadyExists);
         }
-        else if (!$userAlreadyExists && empty($errors))
-        {
-            $this->database->insertUserToDB($username, $password);
-            $this->loginView->setMessage($this->messages->registrationSuccess);
-            $_SESSION['SUCCESS'] = true;   
-            header("Location: ?");
-        }
+        return false;
     }
 }
